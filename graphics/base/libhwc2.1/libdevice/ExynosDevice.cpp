@@ -49,7 +49,6 @@ GrallocWrapper::Allocator* ExynosDevice::mAllocator = NULL;
 
 ExynosDevice::ExynosDevice()
     : mGeometryChanged(0),
-    mDRThread(0),
     mVsyncDisplayId(getDisplayId(HWC_DISPLAY_PRIMARY, 0)),
     mTimestamp(0),
     mDisplayMode(0),
@@ -221,9 +220,8 @@ ExynosDevice::~ExynosDevice() {
 
     ExynosDisplay *primary_display = getDisplay(getDisplayId(HWC_DISPLAY_PRIMARY,0));
 
-    /* TODO kill threads here */
-    pthread_kill(mDRThread, SIGTERM);
-    pthread_join(mDRThread, NULL);
+    mDRLoopStatus = false;
+    mDRThread.join();
 
     if (mMapper != NULL)
         delete mMapper;
@@ -363,20 +361,15 @@ void ExynosDevice::checkDynamicRecompositionThread()
                 return;
         }
         mDRLoopStatus = false;
-        pthread_join(mDRThread, 0);
+        mDRThread.join();
     }
 }
 
 void ExynosDevice::dynamicRecompositionThreadCreate()
 {
     if (exynosHWCControl.useDynamicRecomp == true) {
-        /* pthread_create shouldn't have been failed. But, ignore if some error was occurred */
-        if (pthread_create(&mDRThread, NULL, dynamicRecompositionThreadLoop, this) != 0) {
-            ALOGE("%s: failed to start hwc_dynamicrecomp_thread thread:", __func__);
-            mDRLoopStatus = false;
-        } else {
-            mDRLoopStatus = true;
-        }
+        mDRLoopStatus = true;
+        mDRThread = std::thread(&dynamicRecompositionThreadLoop, this);
     }
 }
 

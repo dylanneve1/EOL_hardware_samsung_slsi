@@ -64,7 +64,8 @@ void *hwc_eventHndler_thread(void *data) {
     char uevent_desc[4096];
     memset(uevent_desc, 0, sizeof(uevent_desc));
 
-    ExynosDevice *dev = (ExynosDevice*)data;
+    ExynosDeviceFbInterface *deviceFbInterface = (ExynosDeviceFbInterface*)data;
+    ExynosDevice *dev = deviceFbInterface->getExynosDevice();
 
     setpriority(PRIO_PROCESS, 0, HAL_PRIORITY_URGENT_DISPLAY);
 
@@ -110,7 +111,7 @@ void *hwc_eventHndler_thread(void *data) {
     }
 
     /** Polling events **/
-    while (true) {
+    while (deviceFbInterface->mEventHandlerRunning) {
         int err = poll(fds, cnt_of_event, -1);
 
         if (err > 0) {
@@ -159,14 +160,12 @@ ExynosDeviceFbInterface::ExynosDeviceFbInterface(ExynosDevice *exynosDevice)
 
 ExynosDeviceFbInterface::~ExynosDeviceFbInterface()
 {
-    /* TODO kill threads here */
-    pthread_kill(mEventHandlerThread, SIGTERM);
-    pthread_join(mEventHandlerThread, NULL);
+    mEventHandlerRunning = false;
+    mEventHandlerThread.join();
 }
 
 void ExynosDeviceFbInterface::init(ExynosDevice *exynosDevice)
 {
-    int ret = 0;
     mExynosDevice = exynosDevice;
 
     ExynosDisplay *primaryDisplay = (ExynosDisplay*)mExynosDevice->getDisplay(HWC_DISPLAY_PRIMARY);
@@ -174,11 +173,7 @@ void ExynosDeviceFbInterface::init(ExynosDevice *exynosDevice)
     updateRestrictions();
 
     /** Event handler thread creation **/
-    ret = pthread_create(&mEventHandlerThread, NULL, hwc_eventHndler_thread, mExynosDevice);
-    if (ret) {
-        ALOGE("failed to start vsync thread: %s", strerror(ret));
-        ret = -ret;
-    }
+    mEventHandlerThread = std::thread(&hwc_eventHndler_thread, this);
 }
 
 int32_t ExynosDeviceFbInterface::makeDPURestrictions() {
