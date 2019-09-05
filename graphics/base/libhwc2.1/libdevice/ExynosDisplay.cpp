@@ -332,8 +332,7 @@ ExynosDisplay::ExynosDisplay(uint32_t index, ExynosDevice *device)
     mMaxBrightness(0),
     mVsyncPeriodChangeConstraints{systemTime(SYSTEM_TIME_MONOTONIC), 0},
     mVsyncAppliedTimeLine{false, 0, systemTime(SYSTEM_TIME_MONOTONIC)},
-    mConfigRequestState(hwc_request_state_t::SET_CONFIG_STATE_NONE),
-    mDisplayInterface(NULL)
+    mConfigRequestState(hwc_request_state_t::SET_CONFIG_STATE_NONE)
 {
     mDisplayControl.enableCompositionCrop = true;
     mDisplayControl.enableExynosCompositionOptimization = true;
@@ -377,8 +376,6 @@ ExynosDisplay::ExynosDisplay(uint32_t index, ExynosDevice *device)
 
 ExynosDisplay::~ExynosDisplay()
 {
-    if (mDisplayInterface != NULL)
-        delete mDisplayInterface;
 }
 
 /**
@@ -4796,7 +4793,7 @@ int32_t ExynosDisplay::setReadbackBufferAcqFence(int32_t acqFence) {
 
 void ExynosDisplay::initDisplayInterface(uint32_t __unused interfaceType)
 {
-    mDisplayInterface = new ExynosDisplayInterface();
+    mDisplayInterface = std::make_unique<ExynosDisplayInterface>();
     mDisplayInterface->init(this);
 }
 

@@ -575,6 +575,6 @@ void ExynosExternalDisplay::handleHotplugEvent()
 
 void ExynosExternalDisplay::initDisplayInterface(uint32_t __unused interfaceType)
 {
-    mDisplayInterface = new ExynosExternalDisplayFbInterfaceModule((ExynosDisplay *)this);
+    mDisplayInterface = std::make_unique<ExynosExternalDisplayFbInterfaceModule>((ExynosDisplay *)this);
     mDisplayInterface->init(this);
 }
