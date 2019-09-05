@@ -906,7 +906,7 @@ class ExynosDisplay {
          * that inherits ExynosDisplayInterface according to
          * interface type.
          */
-        ExynosDisplayInterface *mDisplayInterface;
+        std::unique_ptr<ExynosDisplayInterface> mDisplayInterface;
 
     private:
         bool skipStaticLayerChanged(ExynosCompositionInfo& compositionInfo);

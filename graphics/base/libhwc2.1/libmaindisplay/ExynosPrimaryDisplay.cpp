@@ -204,6 +204,6 @@ bool ExynosPrimaryDisplay::getHDRException(ExynosLayer* __unused layer)
 
 void ExynosPrimaryDisplay::initDisplayInterface(uint32_t __unused interfaceType)
 {
-    mDisplayInterface = new ExynosPrimaryDisplayFbInterfaceModule((ExynosDisplay *)this);
+    mDisplayInterface = std::make_unique<ExynosPrimaryDisplayFbInterfaceModule>((ExynosDisplay *)this);
     mDisplayInterface->init(this);
 }

@@ -211,7 +211,7 @@ class ExynosDevice {
          * that inherits ExynosDeviceInterface according to
          * interface type.
          */
-        ExynosDeviceInterface *mDeviceInterface;
+        std::unique_ptr<ExynosDeviceInterface> mDeviceInterface;
 
         // Con/Destructors
         ExynosDevice();

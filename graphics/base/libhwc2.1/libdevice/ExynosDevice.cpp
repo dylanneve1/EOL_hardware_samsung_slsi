@@ -206,7 +206,7 @@ ExynosDevice::ExynosDevice()
 
 void ExynosDevice::initDeviceInterface(uint32_t interfaceType)
 {
-    mDeviceInterface = new ExynosDeviceFbInterface(this);
+    mDeviceInterface = std::make_unique<ExynosDeviceFbInterface>(this);
     /*
      * This order should not be changed
      * initDisplayInterface() of each display ->
@@ -229,9 +229,6 @@ ExynosDevice::~ExynosDevice() {
         delete mMapper;
     if (mAllocator != NULL)
         delete mAllocator;
-
-    if (mDeviceInterface != NULL)
-        delete mDeviceInterface;
 
     delete primary_display;
 

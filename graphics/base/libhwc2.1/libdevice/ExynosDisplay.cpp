@@ -331,8 +331,7 @@ ExynosDisplay::ExynosDisplay(uint32_t index, ExynosDevice *device)
     mColorMode(HAL_COLOR_MODE_NATIVE),
     mNeedSkipPresent(false),
     mBrightnessFd(NULL),
-    mMaxBrightness(0),
-    mDisplayInterface(NULL)
+    mMaxBrightness(0)
 {
     mDisplayControl.enableCompositionCrop = true;
     mDisplayControl.enableExynosCompositionOptimization = true;
@@ -376,8 +375,6 @@ ExynosDisplay::ExynosDisplay(uint32_t index, ExynosDevice *device)
 
 ExynosDisplay::~ExynosDisplay()
 {
-    if (mDisplayInterface != NULL)
-        delete mDisplayInterface;
 }
 
 /**
@@ -4571,7 +4568,7 @@ int32_t ExynosDisplay::setReadbackBufferAcqFence(int32_t acqFence) {
 
 void ExynosDisplay::initDisplayInterface(uint32_t __unused interfaceType)
 {
-    mDisplayInterface = new ExynosDisplayInterface();
+    mDisplayInterface = std::make_unique<ExynosDisplayInterface>();
     mDisplayInterface->init(this);
 }
 
