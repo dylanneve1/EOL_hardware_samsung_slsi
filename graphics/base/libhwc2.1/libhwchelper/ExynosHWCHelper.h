@@ -71,8 +71,6 @@ enum {
     MAX_ATTRIBUTE_NUM,
 };
 
-#define HAL_COLOR_TRANSFORM_ERROR   100
-
 enum {
     EXYNOS_HWC_DIM_LAYER = 1 << 0,
     EXYNOS_HWC_IGNORE_LAYER = 1 << 1,
