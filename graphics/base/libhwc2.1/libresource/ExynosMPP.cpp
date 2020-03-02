@@ -386,9 +386,12 @@ bool ExynosMPP::isSupportedBlend(struct exynos_image &src)
 
 bool ExynosMPP::checkRotationCondition(struct exynos_image &src)
 {
-    /* VGRFS case */
+    /* Check only DPP types */
+    if (mPhysicalType >= MPP_DPP_NUM)
+        return true;
+
     /* If DPP has their own restriction, implmemnt module codes */
-    if (mPhysicalType == MPP_DPP_VGRFS) {
+    if (mAttr & MPP_ATTR_ROT_90) {
         if ((isFormatYUV420(src.format) == true) &&
             (isFormat10BitYUV420(src.format) == false))
                 return true;
@@ -412,11 +415,10 @@ bool ExynosMPP::isSupportedTransform(struct exynos_image &src)
     if (src.transform == 0) return true;
 
     /* If MPP need to check additional condition,
-     * 1. Set the mAttr(feature_table) as MPP_ATTR_CUSTOM_ROT bit
-     * 2. implement checkRotationCondition function to check it */
+     * implement checkRotationCondition function to check it */
     /* For example, DPP need to check custom conditons */
-    if (mAttr & MPP_ATTR_CUSTOM_ROT)
-        return checkRotationCondition(src);
+    if (!checkRotationCondition(src))
+        return false;
 
     for(auto transform_map : transform_map_table) {
         if (src.transform & transform_map.hal_tr) {
