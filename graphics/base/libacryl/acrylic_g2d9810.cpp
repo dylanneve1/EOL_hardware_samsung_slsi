@@ -1035,11 +1035,15 @@ bool AcrylicCompositorG2D9810::requestPerformanceQoS(AcrylicPerformanceRequest *
             if (equiv_fmt == HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SPN_SBWC ||
                 equiv_fmt == HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SPN_10B_SBWC)
                 data.frame[i].layer[idx].layer_attr |= G2D_PERF_LAYER_SBWC;
-            else if (layer->mAttribute & AcrylicCanvas::ATTR_COMPRESSED)
-                data.frame[i].layer[idx].layer_attr |= G2D_PERF_LAYER_COMPRESSED;
-            else if (planecount == 2)
+            else if (layer->mAttribute & AcrylicCanvas::ATTR_COMPRESSED) {
+                if (planecount == 1)
+                    data.frame[i].layer[idx].layer_attr |= G2D_PERF_LAYER_RGB_AFBC;
+                else
+                    data.frame[i].layer[idx].layer_attr |= G2D_PERF_LAYER_YUV_AFBC;
+            } else if (planecount == 2)
                 data.frame[i].layer[idx].layer_attr |= G2D_PERF_LAYER_YUV2P;
 
+            // src_yuv420_8b is used when calculating write bandwidth
             if (bpp == 12) src_yuv420_8b = true;
 
             layer_bw = pixelcount * bpp;
