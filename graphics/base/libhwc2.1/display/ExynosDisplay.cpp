@@ -3342,10 +3342,10 @@ int32_t ExynosDisplay::clearBootDisplayConfig() {
 }
 
 int32_t ExynosDisplay::getPreferredBootDisplayConfig(int32_t *outConfig) {
-    return HWC2_ERROR_UNSUPPORTED;
+    return getPreferredDisplayConfigInternal(outConfig);
 }
 
-int32_t ExynosDisplay::setAutoLowLatencyMode(bool __unused on) {
+int32_t ExynosDisplay::getPreferredDisplayConfigInternal(int32_t *outConfig) {
     return HWC2_ERROR_UNSUPPORTED;
 }
 
