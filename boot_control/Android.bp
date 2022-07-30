@@ -34,7 +34,6 @@ cc_defaults {
 		"libhardware",
 		"libcutils",
 		"libhidlbase",
-		"libhidltransport",
 		"android.hardware.boot@1.0",
 	],
 
