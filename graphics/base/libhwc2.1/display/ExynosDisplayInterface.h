@@ -38,8 +38,11 @@ class ExynosDisplayInterface {
   public:
     static void removeBuffer(const uint64_t &bufferId);
     virtual ~ExynosDisplayInterface();
-    virtual void init(const DisplayIdentifier &display, void *__unused deviceData,
-                      const size_t __unused deviceDataSize) { mDisplayIdentifier = display; };
+    virtual void init(ExynosDisplay* exynosDisplay, const DisplayIdentifier &display, void *__unused deviceData,
+                      const size_t __unused deviceDataSize) {
+                                                                mExynosDisplay = exynosDisplay;
+                                                                mDisplayIdentifier = display;
+                                                            };
     void updateDisplayInfo(DisplayInfo &dispInfo) { mDisplayInfo = dispInfo; };
     virtual int32_t setPowerMode(int32_t __unused mode) { return HWC2_ERROR_NONE; };
     virtual int32_t setVsyncEnabled(uint32_t __unused enabled) { return HWC2_ERROR_NONE; };
@@ -112,6 +115,7 @@ class ExynosDisplayInterface {
   public:
     uint32_t mType = INTERFACE_TYPE_NONE;
     ExynosVsyncHandler *mVsyncHandler = NULL;
+    ExynosDisplay* mExynosDisplay;
     DisplayIdentifier mDisplayIdentifier;
     DisplayInfo mDisplayInfo;
     bool mIsHdrSink = false;

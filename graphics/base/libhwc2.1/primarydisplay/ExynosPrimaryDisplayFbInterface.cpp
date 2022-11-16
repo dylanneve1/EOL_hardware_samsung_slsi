@@ -42,14 +42,16 @@ ExynosPrimaryDisplayFbInterface::ExynosPrimaryDisplayFbInterface()
     : ExynosDisplayFbInterface() {
 }
 
-void ExynosPrimaryDisplayFbInterface::init(const DisplayIdentifier &display,
+void ExynosPrimaryDisplayFbInterface::init(ExynosDisplay* exynosDisplay, const DisplayIdentifier &display,
                                            void *__unused deviceData, const size_t __unused deviceDataSize) {
+    mExynosDisplay = exynosDisplay;
     mDisplayIdentifier = display;
     mDisplayFd = open(display.deconNodeName.string(), O_RDWR);
     if (mDisplayFd < 0)
         ALOGE("%s:: %s [%s] failed to open framebuffer", __func__, display.name.string(), display.deconNodeName.string());
 
     setVsyncFd();
+    choosePreferredConfig();
 }
 
 int32_t ExynosPrimaryDisplayFbInterface::setPowerMode(int32_t mode) {

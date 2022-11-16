@@ -69,8 +69,9 @@ ExynosExternalDisplayFbInterface::ExynosExternalDisplayFbInterface()
     cleanConfigurations();
 }
 
-void ExynosExternalDisplayFbInterface::init(const DisplayIdentifier &display,
+void ExynosExternalDisplayFbInterface::init(ExynosDisplay* exynosDisplay, const DisplayIdentifier &display,
                                             void *__unused deviceData, const size_t __unused deviceDataSize) {
+    mExynosDisplay = exynosDisplay;
     mDisplayIdentifier = display;
 
     mDisplayFd = open(display.deconNodeName.string(), O_RDWR);

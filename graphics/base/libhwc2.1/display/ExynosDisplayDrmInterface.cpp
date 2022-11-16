@@ -83,8 +83,9 @@ ExynosDisplayDrmInterface::~ExynosDisplayDrmInterface() {
     }
 }
 
-void ExynosDisplayDrmInterface::init(const DisplayIdentifier &display,
+void ExynosDisplayDrmInterface::init(ExynosDisplay* exynosDisplay, const DisplayIdentifier &display,
                                      void *deviceData, const size_t deviceDataSize) {
+    mExynosDisplay = exynosDisplay;
     mDisplayIdentifier = display;
     DeviceInterfaceData *data = (DeviceInterfaceData *)deviceData;
     if ((data == nullptr) || (deviceDataSize != sizeof(DeviceInterfaceData))) {

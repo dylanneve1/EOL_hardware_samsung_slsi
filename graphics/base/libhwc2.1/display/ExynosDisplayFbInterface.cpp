@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+#include "ExynosDisplay.h"
 #include "ExynosDisplayFbInterface.h"
 #include "ExynosHWCDebug.h"
 #include "ExynosFenceTracer.h"
 #include "displayport_for_hwc.h"
+#include <cutils/properties.h>
 #include <math.h>
 
 #include <linux/fb.h>
@@ -56,8 +58,9 @@ ExynosDisplayFbInterface::~ExynosDisplayFbInterface() {
     mDisplayFd = -1;
 }
 
-void ExynosDisplayFbInterface::init(const DisplayIdentifier &display,
+void ExynosDisplayFbInterface::init(ExynosDisplay* exynosDisplay, const DisplayIdentifier &display,
                                     void *__unused deviceData, const size_t __unused deviceDataSize) {
+    mExynosDisplay = exynosDisplay;
     mDisplayIdentifier = display;
 }
 
@@ -88,6 +91,29 @@ int32_t ExynosDisplayFbInterface::setVsyncEnabled(uint32_t enabled) {
         return HWC2_ERROR_BAD_PARAMETER;
     }
     return HWC2_ERROR_NONE;
+}
+
+int32_t ExynosDisplayFbInterface::choosePreferredConfig()
+{
+    uint32_t num_configs = 0;
+    std::map<uint32_t, displayConfigs_t> displayConfigs;
+    int32_t err = getDisplayConfigs(&num_configs, NULL, displayConfigs);
+    if (err != HWC2_ERROR_NONE || !num_configs)
+        return err;
+
+    hwc2_config_t config;
+    int32_t bootConfig;
+    err = mExynosDisplay->getPreferredDisplayConfigInternal(&bootConfig);
+    if (err == HWC2_ERROR_NONE && property_get_bool("sys.boot_completed", false) == true) {
+        config = static_cast<hwc2_config_t>(bootConfig);
+
+        if ((err = setActiveConfig(config, displayConfigs[config])) < 0) {
+            ALOGE("failed to set default config, err %d", err);
+        }
+        ALOGI("Preferred mode id: %d", config);
+    }
+
+    return err;
 }
 
 int32_t ExynosDisplayFbInterface::getDisplayConfigs(uint32_t *outNumConfigs,

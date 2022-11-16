@@ -67,7 +67,7 @@ class ExynosExternalDisplayFbInterface : public ExynosDisplayFbInterface {
     String8 mUeventNode;
 
     ExynosExternalDisplayFbInterface();
-    virtual void init(const DisplayIdentifier &display, void *deviceData,
+    virtual void init(ExynosDisplay* exynosDisplay, const DisplayIdentifier &display, void *deviceData,
                       const size_t deviceDataSize) override;
     virtual int32_t getDisplayConfigs(uint32_t *outNumConfigs, hwc2_config_t *outConfigs,
                                       std::map<uint32_t, displayConfigs_t> &displayConfigs);

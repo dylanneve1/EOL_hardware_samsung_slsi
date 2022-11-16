@@ -4981,7 +4981,7 @@ int32_t ExynosDisplay::getReadbackBufferFence(int32_t *outFence) {
 void ExynosDisplay::initDisplayInterface(uint32_t __unused interfaceType,
                                          void *deviceData, size_t &deviceDataSize) {
     mDisplayInterface = std::make_unique<ExynosDisplayInterface>();
-    mDisplayInterface->init(mDisplayInfo.displayIdentifier,
+    mDisplayInterface->init(this, mDisplayInfo.displayIdentifier,
                             deviceData, deviceDataSize);
 }
 

@@ -26,7 +26,7 @@
 class ExynosPrimaryDisplayFbInterface : public ExynosDisplayFbInterface {
   public:
     ExynosPrimaryDisplayFbInterface();
-    virtual void init(const DisplayIdentifier &display, void *deviceData,
+    virtual void init(ExynosDisplay* exynosDisplay, const DisplayIdentifier &display, void *deviceData,
                       const size_t deviceDataSize) override;
     virtual int32_t setPowerMode(int32_t mode);
     virtual void getDisplayHWInfo(uint32_t &xres, uint32_t &yres, int &psrMode,

@@ -24,7 +24,7 @@ class ExynosVirtualDisplayFbInterface : public ExynosDisplayFbInterface {
   public:
     ExynosVirtualDisplayFbInterface();
     virtual int32_t getColorModes(uint32_t *outNumModes, int32_t *outModes);
-    virtual void init(const DisplayIdentifier &display, void *deviceData,
+    virtual void init(ExynosDisplay* exynosDisplay, const DisplayIdentifier &display, void *deviceData,
                       const size_t deviceDataSize) override;
 };
 

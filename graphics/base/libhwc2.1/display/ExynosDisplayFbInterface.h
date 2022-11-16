@@ -73,7 +73,7 @@ class ExynosDisplayFbInterface : public ExynosDisplayInterface {
   public:
     ExynosDisplayFbInterface();
     ~ExynosDisplayFbInterface();
-    virtual void init(const DisplayIdentifier &display, void *deviceData,
+    virtual void init(ExynosDisplay* exynosDisplay, const DisplayIdentifier &display, void *deviceData,
                       const size_t deviceDataSize) override;
     virtual int32_t setPowerMode(int32_t mode);
     virtual bool isDozeModeAvailable() const {
@@ -149,6 +149,7 @@ class ExynosDisplayFbInterface : public ExynosDisplayInterface {
                                             const exynos_win_config_data &display_config);
     virtual void alignDSCBlockSize(hwc_rect &merge_rect);
     virtual void updateDSCBlockSize(){};
+    int32_t choosePreferredConfig();
 
   protected:
     /**

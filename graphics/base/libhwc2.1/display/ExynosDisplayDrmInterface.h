@@ -97,7 +97,7 @@ class ExynosDisplayDrmInterface : public ExynosDisplayInterface,
 
     ExynosDisplayDrmInterface();
     ~ExynosDisplayDrmInterface();
-    virtual void init(const DisplayIdentifier &display, void *__unused deviceData,
+    virtual void init(ExynosDisplay* exynosDisplay, const DisplayIdentifier &display, void *__unused deviceData,
                       const size_t deviceDataSize) override;
     virtual int32_t setPowerMode(int32_t mode);
     virtual int32_t setLowPowerMode(bool suspend) override;

@@ -330,7 +330,7 @@ void ExynosPrimaryDisplay::initDisplayInterface(uint32_t interfaceType,
         mDisplayInterface = std::make_unique<ExynosDisplayDrmInterface>();
     else
         mDisplayInterface = std::make_unique<ExynosPrimaryDisplayFbInterfaceModule>();
-    mDisplayInterface->init(mDisplayInfo.displayIdentifier,
+    mDisplayInterface->init(this, mDisplayInfo.displayIdentifier,
                             deviceData, deviceDataSize);
 }
 
