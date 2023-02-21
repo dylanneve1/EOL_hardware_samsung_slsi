@@ -1,0 +1,11 @@
+cc_binary {
+    name: "main_abox",
+    srcs: ["main_abox.cpp"],
+    shared_libs: [
+        "libc",
+        "libcutils",
+        "liblog",
+    ],
+
+    proprietary: true,
+}
