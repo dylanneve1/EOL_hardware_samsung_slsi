@@ -24,8 +24,8 @@
 #define HWC_VERSION     HWC_DEVICE_API_VERSION_1_5
 
 #define VSYNC_DEV_PREFIX "/sys/devices/platform/"
-#define PSR_DEV_NAME  "148b0000.decon_f/psr_info"
-#define DP_LINK_NAME	"13090000.displayport"
+#define PSR_DEV_NAME  "16030000.decon_f/psr_info"
+#define DP_LINK_NAME	"10ab0000.displayport"
 #define DP_UEVENT_NAME	"change@/devices/platform/%s/extcon/extcon0"
 #define DP_CABLE_STATE_NAME "/sys/devices/platform/%s/extcon/extcon0/cable.%d/state"
 #define FORCE_DISABLE_DR
@@ -107,8 +107,8 @@ const exynos_mpp_t AVAILABLE_M2M_MPP_UNITS[] = {
 };
 
 const exynos_display_t AVAILABLE_DISPLAY_UNITS[] = {
-    {HWC_DISPLAY_PRIMARY, 0, "PrimaryDisplay", "/dev/graphics/fb0", "148b0000.decon_f/vsync"},
-    {HWC_DISPLAY_EXTERNAL, 0, "ExternalDisplay", "/dev/graphics/fb1", "148c0000.decon_t/vsync"},
+    {HWC_DISPLAY_PRIMARY, 0, "PrimaryDisplay", "/dev/graphics/fb0", "16030000.decon_f/vsync"},
+    {HWC_DISPLAY_EXTERNAL, 0, "ExternalDisplay", "/dev/graphics/fb1", "16050000.decon_t/vsync"},
     {HWC_DISPLAY_VIRTUAL, 0, "VirtualDisplay", {}, {}},
 };
 
