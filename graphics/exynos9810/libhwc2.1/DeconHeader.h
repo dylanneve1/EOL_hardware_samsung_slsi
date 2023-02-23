@@ -62,8 +62,10 @@ struct decon_rect {
 enum decon_idma_type {
   IDMA_G0 = 0,
   IDMA_G1,
-  IDMA_GF,
-  IDMA_VGS0,
+  IDMA_VG0,
+  IDMA_VG1,
+  IDMA_VGF0,
+  IDMA_VGRF0,
   MAX_DECON_DMA_TYPE,
 };
 struct decon_user_window {
