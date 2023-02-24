@@ -31,7 +31,7 @@ typedef uint64_t dma_addr_t;
 #else
 typedef uint32_t dma_addr_t;
 #endif
-#define CHIP_VER (9610)
+#define CHIP_VER (9810)
 #define MAX_RES_NUMBER 5
 #define MAX_FMT_CNT 64
 #define MAX_DPP_CNT 7
