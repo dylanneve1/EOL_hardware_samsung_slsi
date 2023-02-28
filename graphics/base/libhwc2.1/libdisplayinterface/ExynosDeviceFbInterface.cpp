@@ -154,7 +154,6 @@ ExynosDeviceFbInterface::ExynosDeviceFbInterface(ExynosDevice *exynosDevice)
 {
     mUseQuery = false;
     mExynosDevice = exynosDevice;
-    mEventHandlerThread = 0;
     mDisplayFd = -1;
 }
 
