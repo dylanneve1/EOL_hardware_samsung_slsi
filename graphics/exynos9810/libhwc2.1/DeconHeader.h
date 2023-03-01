@@ -33,8 +33,6 @@ typedef uint32_t dma_addr_t;
 #endif
 #define CHIP_VER (9810)
 #define MAX_RES_NUMBER 5
-#define MAX_FMT_CNT 64
-#define MAX_DPP_CNT 7
 struct lcd_res_info {
   unsigned int width;
   unsigned int height;
