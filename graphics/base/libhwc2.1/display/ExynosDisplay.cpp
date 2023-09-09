@@ -3349,6 +3349,11 @@ int32_t ExynosDisplay::getPreferredDisplayConfigInternal(int32_t *outConfig) {
     return HWC2_ERROR_UNSUPPORTED;
 }
 
+int32_t ExynosDisplay::setAutoLowLatencyMode(bool __unused on)
+{
+    return HWC2_ERROR_UNSUPPORTED;
+}
+
 int32_t ExynosDisplay::getSupportedContentTypes(uint32_t *__unused outNumSupportedContentTypes,
                                                 uint32_t *__unused outSupportedContentTypes) {
     if (outSupportedContentTypes == NULL)
