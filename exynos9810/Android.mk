@@ -15,14 +15,10 @@
 #
 
 ifeq ($(TARGET_SOC_BASE), exynos9810)
- exynos9810_dirs := \
- 	libkeymaster \
-	libgatekeeper \
-	libcamera3
 
 ifeq ($(BOARD_USE_COMMON_AUDIOHAL), true)
 ifeq ($(BOARD_USE_AUDIOHAL), true)
-exynos9810_dirs += libaudio
+exynos9810_dirs := libaudio
 endif
 endif
 
