@@ -26,7 +26,10 @@
 
 #include "audio_hw.h"
 #include "voice_manager.h"
+
+#ifdef BOARD_USES_AUDIO_RIL
 #include "sitril_interface.h"
+#endif
 
 #include "audio_proxy_interface.h"
 
@@ -44,8 +47,10 @@
 static int voice_set_sco_solution(struct voice_manager *voice, bool echo_cancel, int sample_rate)
 {
     int ret = 0;
+#ifdef BOARD_USES_AUDIO_RIL
     if (voice) {
         SitRilSetScoSolution(echo_cancel, sample_rate);
+#endif
     }
     return ret;
 }
@@ -53,18 +58,22 @@ static int voice_set_sco_solution(struct voice_manager *voice, bool echo_cancel,
 static int voice_set_volte_status(struct voice_manager *voice, int status)
 {
     int ret = 0;
+#ifdef BOARD_USES_AUDIO_RIL
     if (voice) {
         SitRilSetVoLTEState(status);
     }
+#endif
     return ret;
 }
 
 static int voice_set_hac_mode(struct voice_manager *voice, bool status)
 {
     int ret = 0;
+#ifdef BOARD_USES_AUDIO_RIL
     if (voice) {
         SitRilSetHacModeState(status);
     }
+#endif
     return ret;
 }
 
@@ -91,6 +100,7 @@ int voice_set_call_mode(struct voice_manager *voice, bool on)
 {
     int ret = 0;
 
+#ifdef BOARD_USES_AUDIO_RIL
     if (voice->call_status == CALL_STATUS_INVALID && on) {
         // RIL Audio Client is not connected yet, Re-Try!!!
         ALOGD("vm-%s: RilClient is not opened yet! Retry!", __func__);
@@ -100,6 +110,7 @@ int voice_set_call_mode(struct voice_manager *voice, bool on)
         else
             voice->call_status = CALL_STATUS_INVALID;
     }
+#endif
 
     if (voice->call_status == CALL_STATUS_CONNECTED && on)
         voice->call_status = CALL_STATUS_INCALLMODE;
@@ -115,6 +126,7 @@ int voice_set_call_active(struct voice_manager *voice, bool on)
 {
     int ret = 0;
 
+#ifdef BOARD_USES_AUDIO_RIL
     if (voice->call_status == CALL_STATUS_INCALLMODE && on) {
         voice->call_status = CALL_STATUS_ACTIVE;
         SitRilSetSoundClkMode(1);
@@ -123,6 +135,7 @@ int voice_set_call_active(struct voice_manager *voice, bool on)
         SitRilSetSoundClkMode(0);
     } else
         ALOGE("vm-%s: Invalid Voice Call Status(%d) with %d", __func__, voice->call_status, on);
+#endif
 
     return ret;
 }
@@ -130,9 +143,11 @@ int voice_set_call_active(struct voice_manager *voice, bool on)
 int voice_set_audio_mode(struct voice_manager *voice, int mode, bool status)
 {
     int ret = 0;
+#ifdef BOARD_USES_AUDIO_RIL
     if (voice) {
         SitRilSetAudioMode(mode, status);
     }
+#endif
     return ret;
 }
 
@@ -140,6 +155,7 @@ int voice_set_volume(struct voice_manager *voice, float volume)
 {
     int ret = 0;
 
+#ifdef BOARD_USES_AUDIO_RIL
     if (voice->call_status == CALL_STATUS_ACTIVE) {
         SitRilSetVoiceVolume(voice->out_device, (int)(volume * voice->volume_steps_max), volume);
         ALOGD("vm-%s: Volume = %d(%f)!", __func__, (int)(volume * voice->volume_steps_max), volume);
@@ -147,6 +163,7 @@ int voice_set_volume(struct voice_manager *voice, float volume)
         ALOGE("vm-%s: Voice is not Active", __func__);
         ret = -1;
     }
+#endif
 
     return ret;
 }
@@ -154,9 +171,11 @@ int voice_set_volume(struct voice_manager *voice, float volume)
 int voice_set_extra_volume(struct voice_manager *voice, bool on)
 {
     int ret = 0;
+#ifdef BOARD_USES_AUDIO_RIL
     if (voice) {
         SitRilSetExtraVolume(on);
     }
+#endif
     return ret;
 }
 
@@ -165,6 +184,7 @@ int voice_set_path(struct voice_manager *voice, audio_devices_t devices)
     int ret = 0;
     int mode = AUDIO_MODE_IN_CALL;
 
+#ifdef BOARD_USES_AUDIO_RIL
     if (voice_is_call_mode(voice)) {
         voice->out_device = devices;
         SitRilSetVoicePath(mode, devices);
@@ -172,6 +192,9 @@ int voice_set_path(struct voice_manager *voice, audio_devices_t devices)
         ALOGE("%s: Voice is not created", __func__);
         ret = -1;
     }
+#else
+    ret = -1;
+#endif
 
     return ret;
 }
@@ -179,9 +202,11 @@ int voice_set_path(struct voice_manager *voice, audio_devices_t devices)
 int voice_set_mic_mute(struct voice_manager *voice, bool status)
 {
     int ret = 0;
+#ifdef BOARD_USES_AUDIO_RIL
     if (voice_is_call_mode(voice) || (voice->loopback_mode != FACTORY_LOOPBACK_OFF)) {
         SitRilSetTxMute(status);
     }
+#endif
     ALOGD("vm-%s: MIC Mute = %d!", __func__, status);
     return ret;
 }
@@ -189,26 +214,32 @@ int voice_set_mic_mute(struct voice_manager *voice, bool status)
 int voice_set_rx_mute(struct voice_manager *voice, bool status)
 {
     int ret = 0;
+#ifdef BOARD_USES_AUDIO_RIL
     if (voice) {
         SitRilSetRxMute(status);
     }
+#endif
     return ret;
 }
 
 int voice_set_usb_mic(struct voice_manager *voice, bool status)
 {
     int ret = 0;
+#ifdef BOARD_USES_AUDIO_RIL
     if (voice) {
         SitRilSetUSBMicState(status);
     }
+#endif
     return ret;
 }
 
 void voice_set_call_forwarding(struct voice_manager *voice, bool callfwd)
 {
+#ifdef BOARD_USES_AUDIO_RIL
     if (voice) {
         SitRilSetCallFowardingMode(callfwd);
     }
+#endif
     return;
 }
 
@@ -335,7 +366,9 @@ int voice_set_callback(struct voice_manager * voice __unused, void * callback_fu
 {
     int ret = 0;
 
+#ifdef BOARD_USES_AUDIO_RIL
     SitRilRegisterCallback(0, callback_func);
+#endif
     return ret;
 }
 
@@ -376,14 +409,18 @@ int voice_set_loopback_device(struct voice_manager *voice, int mode, int rx_dev,
             ALOGI("%s: Set loopback rx path as RCV (Speaker2)", __func__);
             rx_dev = AUDIO_DEVICE_OUT_EARPIECE; // set rcv as speaker2
         }
+#ifdef BOARD_USES_AUDIO_RIL
         SitRilSetLoopback(mode, rx_dev, tx_dev);
+#endif
     }
     return ret;
 }
 
 void voice_ril_dump(int fd __unused)
 {
+#ifdef BOARD_USES_AUDIO_RIL
     SitRilDump(fd);
+#endif
 }
 
 int voice_get_volume_index(struct voice_manager *voice, float volume)
@@ -394,9 +431,11 @@ int voice_get_volume_index(struct voice_manager *voice, float volume)
 int voice_set_tty_mode(struct voice_manager *voice, int ttymode)
 {
     int ret = 0;
+#ifdef BOARD_USES_AUDIO_RIL
     if (voice) {
         SitRilSetTTYMode(ttymode);
     }
+#endif
     return ret;
 }
 
@@ -432,8 +471,10 @@ int voice_callback(void * handle, int event, const void *data, unsigned int data
 void voice_deinit(struct voice_manager *voice)
 {
     if (voice) {
+#ifdef BOARD_USES_AUDIO_RIL
         /* RIL */
         SitRilClose();
+#endif
         free(voice);
     }
 
@@ -449,8 +490,10 @@ struct voice_manager* voice_init(void)
     voice = calloc(1, sizeof(struct voice_manager));
     if (voice) {
 
+#ifdef BOARD_USES_AUDIO_RIL
         // At initial time, try to connect to AudioRIL
         ret = SitRilOpen();
+#endif
         if (ret == 0)
             voice->call_status = CALL_STATUS_CONNECTED;
         else
