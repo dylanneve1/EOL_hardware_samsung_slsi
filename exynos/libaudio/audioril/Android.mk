@@ -24,8 +24,8 @@ LOCAL_SRC_FILES := sitril_interface.c
 
 LOCAL_C_INCLUDES += \
 	$(TOP)/hardware/samsung_slsi/exynos/include/libaudio/audiohal \
-	$(TOP)/hardware/samsung_slsi/exynos/libaudio/audioril-sit \
-	$(TOP)/hardware/samsung_slsi/exynos/libaudio/audioril-sit/include
+	$(TOP)/hardware/samsung_slsi/exynos/libaudio/audioril \
+	$(TOP)/hardware/samsung_slsi/exynos/libaudio/audioril/include
 
 LOCAL_C_INCLUDES += ./include
 

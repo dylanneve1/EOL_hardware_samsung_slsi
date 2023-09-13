@@ -31,8 +31,8 @@ ifeq ($(BOARD_USE_AUDIO_RIL),true)
 LOCAL_CFLAGS += -DBOARD_USE_AUDIO_RIL
 
 LOCAL_C_INCLUDES += \
-	$(TOP)/hardware/samsung_slsi/exynos/libaudio/audioril-sit \
-	$(TOP)/hardware/samsung_slsi/exynos/libaudio/audioril-sit/include
+	$(TOP)/hardware/samsung_slsi/exynos/libaudio/audioril \
+	$(TOP)/hardware/samsung_slsi/exynos/libaudio/audioril/include
 endif
 
 LOCAL_HEADER_LIBRARIES := libhardware_headers
