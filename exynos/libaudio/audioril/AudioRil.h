@@ -18,7 +18,11 @@
 #define __AUDIO_RIL_H__
 
 
+#ifdef BOARD_USES_SEC_RIL
+#include "./include/secril-client.h"
+#else
 #include "./include/sitril-client.h"
+#endif
 
 
 // VoLTE Status : same as volte_status_t in VoiceManager

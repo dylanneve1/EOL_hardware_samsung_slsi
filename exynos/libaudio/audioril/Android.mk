@@ -20,7 +20,12 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
+ifeq ($(BOARD_USES_SEC_RIL), true)
+LOCAL_CFLAGS += -DBOARD_USE_SEC_RIL
+LOCAL_SRC_FILES := secril_interface.c
+else
 LOCAL_SRC_FILES := sitril_interface.c
+endif
 
 LOCAL_C_INCLUDES += \
 	$(TOP)/hardware/samsung_slsi/exynos/include/libaudio/audiohal \

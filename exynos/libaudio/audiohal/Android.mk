@@ -30,6 +30,10 @@ LOCAL_C_INCLUDES += $(TOP)/hardware/samsung_slsi/exynos/include/libaudio/audioha
 ifeq ($(BOARD_USE_AUDIO_RIL),true)
 LOCAL_CFLAGS += -DBOARD_USE_AUDIO_RIL
 
+ifeq ($(BOARD_USE_SEC_RIL),true)
+LOCAL_CFLAGS += -DBOARD_USE_SEC_RIL
+endif
+
 LOCAL_C_INCLUDES += \
 	$(TOP)/hardware/samsung_slsi/exynos/libaudio/audioril \
 	$(TOP)/hardware/samsung_slsi/exynos/libaudio/audioril/include
