@@ -25,18 +25,27 @@ LOCAL_SRC_FILES := \
 	voice_manager.c \
 	factory_manager.c
 
+LOCAL_C_INCLUDES += $(TOP)/hardware/samsung_slsi/exynos/include/libaudio/audiohal
+
+ifeq ($(BOARD_USE_AUDIO_RIL),true)
+LOCAL_CFLAGS += -DBOARD_USE_AUDIO_RIL
+
 LOCAL_C_INCLUDES += \
-	$(TOP)/hardware/samsung_slsi/exynos/include/libaudio/audiohal \
 	$(TOP)/hardware/samsung_slsi/exynos/libaudio/audioril-sit \
 	$(TOP)/hardware/samsung_slsi/exynos/libaudio/audioril-sit/include
+endif
 
 LOCAL_HEADER_LIBRARIES := libhardware_headers
 LOCAL_SHARED_LIBRARIES := liblog libcutils libprocessgroup libaudioproxy
+ifeq ($(BOARD_USE_AUDIO_RIL),true)
 LOCAL_SHARED_LIBRARIES += libaudio-ril
+endif
 
 ifeq ($(BOARD_USE_SOUNDTRIGGER_HAL),true)
 LOCAL_CFLAGS += -DSUPPORT_STHAL_INTERFACE
 endif
+
+LOCAL_CFLAGS += -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function
 
 LOCAL_MODULE := audio.primary.$(TARGET_SOC)
 LOCAL_PROPRIETARY_MODULE := true
